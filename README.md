@@ -38,7 +38,7 @@ webpack 开启监听模式，有两种方式：
 
 缺陷就是，浏览器不能自动刷新
 
-原理分析：
+原理分析：TODO
 轮询判断文件的最后编辑时间是否变化，某文件发生了变化，并不会立即告诉监听者，而是先缓存起来，等待一段时间 aggregateTimeout，如果这段时间有其他文件发生了变化，则下次一起更新。 
 
 ```js
@@ -54,4 +54,29 @@ module.export = {
 ```
 
 ## 8. 热更新
+两种方式热更新：
+- webpack-dev-server：不输出文件，而是放在内存中
+- 使用 webpack-dev-middleware：使用 node 中间件输出
+
+热更新原理：TODO
+
+
+## 9. chunkHash
+
+- Hash：每次项目构建，只要项目中有文件有修改，整个项目文件的 hash 值都会变化
+- Chunkhash：和 webpack 打包的 chunk 有关，不同的 entry 会生成不同的 chunkhash 值（一般 JS 文件）
+- Contenthash：根据文件内容来定义 hash，只要内容不变，contenthash 不变（一般 CSS 文件）
+
+## 10. 压缩
+
+HTML、CSS、JS 压缩
+生产环境下，js 默认会压缩
+
+## 11. 自动清理构建目录
+
+使用 clean-webpack-plugin 插件
+
+## 12. PostCSS、autoprefix 插件
+
+## 13. 移动端 px 转换成 rem
 

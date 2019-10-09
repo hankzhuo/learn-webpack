@@ -1,4 +1,7 @@
 const path = require('path');
+const webpack = require('webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin'); // HTML 模板，多文件模板
+const {CleanWebpackPlugin} = require('clean-webpack-plugin'); // 清除输出文件的目录
 
 module.exports = {
   entry: {
@@ -9,7 +12,7 @@ module.exports = {
     path: path.join(__dirname, 'dist'),
     filename: '[name].js'
   },
-  mode: 'production',
+  mode: 'development',
   module: {
     rules: [
       {
@@ -47,5 +50,27 @@ module.exports = {
         use: 'file-loader'
       }
     ]
+  },
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    new HtmlWebpackPlugin({
+      template: path.join(__dirname, 'src/index.html'),
+      filename: 'index.html',
+      chunks: ['index'],
+      inject: true,
+      minify: {
+          html5: true,
+          collapseWhitespace: true,
+          preserveLineBreaks: false,
+          minifyCSS: true,
+          minifyJS: true,
+          removeComments: false
+      }
+    }),
+    new CleanWebpackPlugin(),
+  ],
+  devServer: {
+    contentBase: './dist',
+    hot: true
   }
 }
