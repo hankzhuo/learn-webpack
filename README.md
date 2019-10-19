@@ -60,7 +60,6 @@ module.export = {
 
 热更新原理：TODO
 
-
 ## 9. chunkHash
 
 - Hash：每次项目构建，只要项目中有文件有修改，整个项目文件的 hash 值都会变化
@@ -78,5 +77,55 @@ HTML、CSS、JS 压缩
 
 ## 12. PostCSS、autoprefix 插件
 
+自动补充 CSS3 前缀，使用 postcss-loader、autoprefixer
+
 ## 13. 移动端 px 转换成 rem
+
+使用 px2rem-loader、flexible 结合
+
+## 静态资源内联
+
+减少 url 请求次数，小图片或字体内联（url-loader）
+HTML 和 JS 内联，可以使用 raw-loader
+CSS 内联：
+1. 第一种是 借助 style-loader，设置参数options
+2. 使用 html-inline-css-webpack-plugin 插件
+
+## 14.多页面打包方案
+
+1. 每个页面对应一个 entry 和设置 html-webpack-plugin 插件
+2. 使用 glob 库
+
+## 15.使用 sourcemap
+
+开发环境开启，定位到源代码
+线上环境，一般不开启
+
+## 16.提取公共资源
+
+1. 将 react、react-dom 基础包通过 cdn 方式引入，不打入 bundle 中，可以使用 html-webpack-externals-plugin 插件
+2. 使用 webpack4 内部 SplitChunksPlugin 插件，也可以提取公共文件
+
+## 17.使用 Tree Shaking 
+
+一些不会执行的代码不会打包进文件，production 模式下自动执行
+
+## 18. scope hoisting
+
+production 模式下默认开启(webpack 4)，减少闭包
+
+## 19. 代码分割、动态 import 
+
+抽离相同代码到一个公共块
+脚本懒加载，使得初始下载的代码更小
+不是首屏的内容可以先不加载
+
+1. require.ensure
+2. 动态 import (需要 babel 插件 babel/plugin-syntax-dynamic-import）
+
+## 20. ESLint 规范
+
+
+
+## 21. SSR
 

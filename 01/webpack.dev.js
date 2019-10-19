@@ -1,13 +1,48 @@
 const path = require('path');
+const glob = require('glob')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin'); // HTML 模板，多文件模板
-const {CleanWebpackPlugin} = require('clean-webpack-plugin'); // 清除输出文件的目录
+const CleanWebpackPlugin = require('clean-webpack-plugin'); // 清除输出文件的目录
+
+// 多页面设置入口
+const setMPA = () => {
+  const entry = {};
+  const htmlWebpackPlugins = [];
+  const entryFiles = glob.sync(path.join(__dirname, './src/*/index.js'));
+
+  Object.keys(entryFiles)
+      .map((index) => {
+          const entryFile = entryFiles[index];
+          const match = entryFile.match(/src\/(.*)\/index\.js/);
+          const pageName = match && match[1];
+          entry[pageName] = entryFile; // pageName: index、search
+          htmlWebpackPlugins.push(
+              new HtmlWebpackPlugin({
+                  inlineSource: '.css$',
+                  template: path.join(__dirname, `src/${pageName}/index.html`),
+                  filename: `${pageName}.html`,
+                  chunks: [pageName],
+                  inject: true,
+                  minify: {
+                      html5: true,
+                      collapseWhitespace: true,
+                      preserveLineBreaks: false,
+                      minifyCSS: true,
+                      minifyJS: true,
+                      removeComments: false
+                  }
+              })
+          );
+      });
+  return {
+      entry,
+      htmlWebpackPlugins
+  }
+}
+const { entry, htmlWebpackPlugins } = setMPA();
 
 module.exports = {
-  entry: {
-    index: './src/index.js',
-    search: './src/search.js'
-  },
+  entry: entry,
   output: {
     path: path.join(__dirname, 'dist'),
     filename: '[name].js'
@@ -53,24 +88,11 @@ module.exports = {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new HtmlWebpackPlugin({
-      template: path.join(__dirname, 'src/index.html'),
-      filename: 'index.html',
-      chunks: ['index'],
-      inject: true,
-      minify: {
-          html5: true,
-          collapseWhitespace: true,
-          preserveLineBreaks: false,
-          minifyCSS: true,
-          minifyJS: true,
-          removeComments: false
-      }
-    }),
     new CleanWebpackPlugin(),
-  ],
+  ].concat(htmlWebpackPlugins),
   devServer: {
     contentBase: './dist',
     hot: true
-  }
+  },
+  devtool: 'source-map'
 }
