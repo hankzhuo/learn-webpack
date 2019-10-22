@@ -125,7 +125,21 @@ production 模式下默认开启(webpack 4)，减少闭包
 
 ## 20. ESLint 规范
 
+eslint-config-airbnb、eslint-config-airbnb-base
 
+1. 本地开发阶段增加 precommit 钩子
+2. 增加到 webpack 中
 
 ## 21. SSR
 
+服务端核心是减少请求。主要用到了 react 中 renderToString API
+
+解决问题：
+1. 样式不显示问题
+2. 浏览器全局变量问题
+3. 获取数据问题
+
+## 22. 构建显示日志
+
+1. stats
+2. friendly-errors-webpack-plugin 插件
