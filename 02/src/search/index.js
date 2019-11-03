@@ -15,6 +15,7 @@ class Search extends React.Component {
     }
 
     loadComponent() {
+        // 动态 import
         import('./text.js').then((Text) => {
             this.setState({
                 Text: Text.default

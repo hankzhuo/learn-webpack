@@ -49,24 +49,25 @@
     1.  一些不会执行的代码不会打包进文件，production 模式下自动执行
 19. Scope Hoisting
     1.  production 模式下默认开启(webpack 4)，减少闭包
-20. 代码分割、动态 import 
+20. 代码分割 
     1.  抽离相同代码到一个公共块
     2.  脚本懒加载，使得初始下载的代码更小
     3.  不是首屏的内容可以先不加载
-    4.  require.ensure
-    5.  动态 import (需要 babel 插件 `babel/plugin-syntax-dynamic-import`）
-21. ESLint 规范
+21. 动态 import
+    1.  CommonJS：require.ensure 支持动态 import
+    2.  ES6：动态 import (目前还没原生支持，需要需要 babel 插件 `babel/plugin-syntax-dynamic-import`），jsonp 形式引入
+22. ESLint 规范
     1.  使用 `eslint-config-airbnb、eslint-config-airbnb-base` 插件
     2.  本地开发阶段增加 precommit 钩子
     3.  增加到 webpack 中，比如 `eslint-loader`
-22. SSR
+23. SSR
     1.  服务端核心是减少请求，提高首屏渲染速度。
     2.  主要用到了 react 的 API `renderToString`，将 React 组件转化为字符串形式，起一个 node 服务，将模板返回给浏览器
     3.  解决问题：
         1.  样式不显示问题
         2.  浏览器全局变量问题
         3.  获取数据问题
-23. 构建显示日志
+24. 构建显示日志
     1.  自带 stats
     2.  friendly-errors-webpack-plugin 插件
 
