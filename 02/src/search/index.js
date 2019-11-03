@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import 'babel-polyfill'
 import '../../common'
 import logo from './images/1.jpg';
 import './index.less';

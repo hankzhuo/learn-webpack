@@ -1,4 +1,4 @@
-# Webpack 用法
+# Webpack 基本用法
 
 ## 1. entry
 
@@ -128,11 +128,12 @@ production 模式下默认开启(webpack 4)，减少闭包
 eslint-config-airbnb、eslint-config-airbnb-base
 
 1. 本地开发阶段增加 precommit 钩子
-2. 增加到 webpack 中
+2. 增加到 webpack 中，比如 `eslint-loader`
 
 ## 21. SSR
 
-服务端核心是减少请求。主要用到了 react 中 renderToString API
+服务端核心是减少请求，提高首屏渲染速度。
+主要用到了 react 的 API `renderToString`，将 React 组件转化为字符串形式，起一个 node 服务，将模板返回给浏览器
 
 解决问题：
 1. 样式不显示问题
@@ -141,5 +142,29 @@ eslint-config-airbnb、eslint-config-airbnb-base
 
 ## 22. 构建显示日志
 
-1. stats
+1. 自带 stats
 2. friendly-errors-webpack-plugin 插件
+
+
+# webpack 打包优化
+
+1. 使用 `speed-measure-webpack-plugin` 分析每个 loader 和插件执行耗时
+2. 使用 `webpack-bundle-analyzer` 插件分析打包体积，构建完成后打开端口 8888 展示
+3. 使用高版本的 `webpack` 和 `node`，软件自身做了很多优化
+4. 多进程打包，可以使用 thread-loader（webpack4 自带）、HappyPack（不再维护）、parallel-webpack
+5. 多进程并行压缩 `uglifyjs-webpack-plugin`、`terser-webpack-plugin（webpack4 推荐）` 开启参数 `parallel: true`
+6. 分包
+   1. 设置 Externals，使用 `html-webpack-externals-plugin` 公共库 React、React-DOM 等包抽离出来，不打包进 bundle，采用 CDN 方式引入。缺点就是要引入多个 script 标签
+   2. 预编译资源模块，使用 DLLPlugin 插件进行分包，使用 `DllReferencePlugin` 插件对 `manifest.json` 引用，然后在模板文件中引入
+7. 缓存
+   1. 使用 babel-loader 开启缓存
+   2. 使用 terser-webpack-plugin 开启缓存
+   3. 使用 cache-loader 或者 hard-source-webpack-plugin
+8. 减少构建目标
+   1. 比如 babel-loader 不解析node_modules
+   2. 减少文件的搜索范围，优化 resolve.modules、resolve.extensions、resolve.mainFields 配置，合理使用 alias
+9. 使用 Tree Shaking 去除无用的 JavaScript 和 CSS
+   1.  JavaScript 代码在 production 模式下自动执行
+   2.  CSS 使用 `purgecss-webpack-plugin` 和 `mini-css-extract-plugin` 插件
+10. 使用 webpack 进行图片压缩，使用 `image-webpack-plugin` 插件
+12. 使用动态 polyfill，`polyfill-service` 可以识别每个手机的 User Agent 对支持程度代码支持程度，动态加载下发 polyfill
